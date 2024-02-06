@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16.1
+    container_name: postgres
+    environment:
+      POSTGRES_DB: "telegdiscobot"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "qwertyui"
+    ports:
+      - "5432:5432"
+  telegdiscobot:
+    image: telegram-discord-bot
+    build:
+      context: .
+    container_name: telegram-discord-bot
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/telegdiscobot
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATA_PASSWORD=qwertyui
+      - SPRING_DATA_HIBERNATE_DDL_AUTO=update
